@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A Cyber PSA from Your Friendly Relative</title>
+<meta name="description" content="Common online scams to watch for, what to do about each one, and simple ways to protect yourself.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F3F7F5;
+  --paper-2:#E5EFEB;
+  --ink:#13262B;
+  --ink-soft:#44585E;
+  --teal:#17695E;
+  --sun:#FFD25A;
+  --on-sun:#1D1600;
+  --rose:#B8334F;
+  --rule:#C5D6D0;
+  --on-teal:#FFFFFF;
+  --display:"Bricolage Grotesque","Avenir Next","Trebuchet MS",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",Verdana,system-ui,sans-serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1B1F;
+    --paper-2:#16282D;
+    --ink:#E8F1EF;
+    --ink-soft:#A9BDB9;
+    --teal:#5FD0BC;
+    --rose:#FF8CA3;
+    --rule:#2B4046;
+    --on-teal:#0E1B1F;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1B1F;
+  --paper-2:#16282D;
+  --ink:#E8F1EF;
+  --ink-soft:#A9BDB9;
+  --teal:#5FD0BC;
+  --rose:#FF8CA3;
+  --rule:#2B4046;
+  --on-teal:#0E1B1F;
+  color-scheme:dark;
+}
+html{
+  background:var(--paper);
+  scroll-padding-top:calc(env(safe-area-inset-top,0px) + 1rem);
+  -webkit-text-size-adjust:100%;
+}
+@media (prefers-reduced-motion:no-preference){
+  html{scroll-behavior:smooth}
+}
+*,*::before,*::after{box-sizing:inherit}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:1.125rem;
+  line-height:1.65;
+}
+.wrap{
+  max-width:42rem;
+  margin:0 auto;
+  padding:3rem 1.25rem 4rem;
+}
+a{color:var(--teal);text-underline-offset:.2em;text-decoration-thickness:.08em}
+a:hover{text-decoration-thickness:.16em}
+a:focus-visible,summary:focus-visible{outline:3px solid var(--teal);outline-offset:3px;border-radius:2px}
+
+/* To / From memo */
+[hidden]{display:none !important}
+.memo{margin:0 0 2.5rem;padding:0 0 1.75rem;border-bottom:2px solid var(--ink)}
+.memo-title{font-family:var(--display);font-weight:600;font-size:1.05rem;line-height:1.4;color:var(--ink-soft);margin:0 0 1.25rem;max-width:30rem}
+.line{display:grid;grid-template-columns:5.5rem 1fr;align-items:baseline;gap:.25rem 1rem;margin:0 0 .75rem}
+.line label,.line .k{font-family:var(--display);font-weight:800;font-size:1.6rem;letter-spacing:-.01em}
+.line .v{font-family:var(--display);font-weight:600;font-size:1.6rem;overflow-wrap:anywhere}
+.line input{
+  font-family:var(--display);font-weight:600;font-size:1.6rem;
+  color:var(--ink);background:transparent;
+  border:0;border-bottom:2px solid var(--ink-soft);border-radius:0;
+  padding:.15rem 0;min-height:2.75rem;width:100%;
+}
+.line input::placeholder{color:var(--ink-soft);opacity:.65;font-weight:400}
+.line input:focus-visible{outline:none;border-bottom-color:var(--teal);box-shadow:0 3px 0 var(--teal)}
+.btn{
+  font-family:var(--display);font-weight:800;font-size:1.05rem;
+  background:var(--teal);color:var(--on-teal);
+  border:0;border-radius:.6rem;padding:.8rem 1.25rem;min-height:3rem;cursor:pointer;
+}
+.btn:hover{filter:brightness(1.1)}
+.btn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.btn.quiet{background:transparent;color:var(--teal);padding:.5rem 0;min-height:2.75rem;font-weight:600;text-decoration:underline;text-underline-offset:.2em}
+.status{min-height:1.5em;margin:.75rem 0 0;font-size:1rem;color:var(--ink-soft)}
+.status.err{color:var(--rose)}
+.result{margin-top:1rem;padding:1rem 1.1rem;background:var(--paper-2);border-radius:.6rem}
+.result p{margin:0 0 .75rem}
+.linkrow{display:flex;gap:.6rem;flex-wrap:wrap}
+.linkrow input{flex:1 1 14rem;min-width:0;font:inherit;font-size:1rem;padding:.7rem .8rem;border:2px solid var(--rule);border-radius:.5rem;background:var(--paper);color:var(--ink)}
+.linkrow input:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+@media (max-width:30rem){.line{grid-template-columns:1fr}}
+
+/* Hero */
+.shield{width:3.25rem;height:auto;display:block;margin-bottom:1.25rem}
+.shield path.body{fill:var(--teal)}
+.shield path.tick{fill:none;stroke:var(--paper);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+h1{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:clamp(2.4rem,8.5vw,4.2rem);
+  line-height:1.02;
+  letter-spacing:-.025em;
+  margin:0 0 1.5rem;
+}
+.lead{font-size:1.2rem;margin:0 0 1rem;max-width:36rem}
+.skip{margin:1.25rem 0 0;color:var(--ink-soft)}
+
+/* Jump list */
+.jump{
+  margin:2.5rem 0 0;
+  padding:1.25rem 0 0;
+  border-top:1px solid var(--rule);
+}
+.jump h2{
+  font-family:var(--display);
+  font-size:1rem;
+  font-weight:600;
+  margin:0 0 .5rem;
+  color:var(--ink-soft);
+}
+.jump ul{
+  list-style:none;
+  margin:0;
+  padding:0;
+  columns:2 14rem;
+  column-gap:2rem;
+  font-size:1rem;
+  line-height:1.9;
+}
+
+/* Section headings */
+h2.section{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:clamp(1.7rem,5vw,2.3rem);
+  letter-spacing:-.02em;
+  line-height:1.1;
+  margin:4rem 0 .5rem;
+}
+.section-note{margin:0 0 1.5rem;color:var(--ink-soft)}
+
+/* Scam list */
+.scam{
+  position:relative;
+  padding:1.6rem 0 1.6rem 1.25rem;
+  border-top:1px solid var(--rule);
+}
+.scam::before{
+  content:"";
+  position:absolute;
+  left:0;top:1.9rem;bottom:1.9rem;
+  width:4px;border-radius:2px;
+  background:var(--rose);
+}
+.scam h3{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:1.45rem;
+  line-height:1.2;
+  letter-spacing:-.01em;
+  margin:0 0 .5rem;
+}
+.scam p{margin:0 0 .75rem}
+.scam .do{
+  margin:1rem 0 0;
+  padding:.8rem 1rem;
+  background:var(--paper-2);
+  border-radius:.6rem;
+}
+.scam .do strong{color:var(--teal)}
+.scam:last-of-type{border-bottom:1px solid var(--rule)}
+
+/* Protect */
+.gap{
+  background:var(--sun);
+  color:var(--on-sun);
+  padding:1.75rem 1.5rem 1.5rem;
+  border-radius:1rem;
+  margin:1.5rem 0 2rem;
+}
+.gap h3{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:clamp(2.6rem,11vw,4.6rem);
+  line-height:.95;
+  letter-spacing:-.03em;
+  margin:0 0 .75rem;
+}
+.gap p{margin:0;font-size:1.2rem;max-width:34rem}
+.tips{list-style:none;margin:0;padding:0}
+.tips li{
+  position:relative;
+  padding:1.25rem 0 1.25rem 2.5rem;
+  border-top:1px solid var(--rule);
+}
+.tips li:last-child{border-bottom:1px solid var(--rule)}
+.tips li::before{
+  content:"";
+  position:absolute;
+  left:0;top:1.55rem;
+  width:1.5rem;height:1.5rem;
+  border-radius:.4rem;
+  background:var(--teal);
+}
+.tips li::after{
+  content:"";
+  position:absolute;
+  left:.5rem;top:1.7rem;
+  width:.5rem;height:.85rem;
+  border:solid var(--paper);
+  border-width:0 3px 3px 0;
+  transform:rotate(45deg) scale(.9);
+  transform-origin:center;
+}
+.tips h3{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:1.3rem;
+  line-height:1.2;
+  margin:0 0 .35rem;
+}
+.tips p{margin:0}
+
+/* Sign-off */
+.signoff{margin-top:3.5rem;padding-top:1.5rem;border-top:1px solid var(--rule)}
+.signoff p{margin:0 0 .25rem;font-size:1.2rem}
+.signoff .name{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:1.6rem;
+}
+
+@media print{
+  html,body{background:#fff;color:#000}
+  .jump,.skip,.make,#remake{display:none}
+  .gap{border:2px solid #000;background:#fff;color:#000}
+  a{color:#000}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <section class="memo" id="memo" aria-label="Who this is for and from">
+    <div id="make" class="make">
+      <p class="memo-title">Make it personal. Add who it’s for and who it’s from, then send the link.</p>
+      <div class="line"><label for="to">To</label><input id="to" type="text" maxlength="40" autocomplete="off" placeholder="Mom"></div>
+      <div class="line"><label for="from">From</label><input id="from" type="text" maxlength="40" autocomplete="off" placeholder="Your name"></div>
+      <button type="button" class="btn" id="create">Create my link</button>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+      <div class="result" id="result" hidden>
+        <p>Send this link. It opens this page addressed to <strong id="r-to"></strong> from <strong id="r-from"></strong>.</p>
+        <div class="linkrow">
+          <input id="link" type="text" readonly aria-label="Your personalized link">
+          <button type="button" class="btn" id="copy">Copy link</button>
+          <button type="button" class="btn" id="share" hidden>Share</button>
+        </div>
+      </div>
+    </div>
+    <div id="view" hidden>
+      <div class="line"><span class="k">To</span><span class="v" id="v-to"></span></div>
+      <div class="line"><span class="k">From</span><span class="v" id="v-from"></span></div>
+      <button type="button" class="btn quiet" id="remake">Make your own version to send</button>
+    </div>
+  </section>
+
+  <svg class="shield" viewBox="0 0 60 70" aria-hidden="true" focusable="false">
+    <path class="body" d="M30 2 6 11v20c0 17 10 30 24 37 14-7 24-20 24-37V11L30 2Z"/>
+    <path class="tick" d="m19 35 8 8 15-17"/>
+  </svg>
+
+  <h1>A cyber PSA from your friendly relative</h1>
+
+  <p class="lead">I want to send everyone a quick update every now and then on common online scams I’m seeing and we’re talking about on our programming.</p>
+  <p class="lead">The whole point is just to be aware that you may be hit by these scams. I’ll try to keep this short and sweet.</p>
+  <p class="skip">Short on time? Read <a href="#gap-it">GAP IT</a> and <a href="#family-password">the family password</a> first.</p>
+
+  <nav class="jump" aria-labelledby="jump-title">
+    <h2 id="jump-title">Jump to a scam</h2>
+    <ul>
+      <li><a href="#pig-butchering">Pig butchering</a></li>
+      <li><a href="#paypal-bank">PayPal and bank scams</a></li>
+      <li><a href="#paid-too-much">“We paid you too much”</a></li>
+      <li><a href="#update-password">“Update your password”</a></li>
+      <li><a href="#prize">“You’ve won a prize”</a></li>
+      <li><a href="#mfa">MFA code scams</a></li>
+      <li><a href="#gift-card">Gift card scams</a></li>
+      <li><a href="#merchandise">Online merchandise scams</a></li>
+      <li><a href="#family-scam">Family member scams</a></li>
+      <li><a href="#tech-support">Tech support scams</a></li>
+      <li><a href="#credential-stuffing">Credential stuffing</a></li>
+    </ul>
+  </nav>
+
+  <h2 class="section" id="scams">Scams to watch for</h2>
+  <p class="section-note">Each one comes with what to do about it.</p>
+
+  <article class="scam" id="pig-butchering">
+    <h3>Pig butchering</h3>
+    <p>You get a text out of the blue from a number you don’t recognize. It might say “Hey,” or “Are you coming by at 9:00 PM?” or “When are we getting dinner?” The request is so innocent that you feel like you should recognize it, and your first instinct is to ask, “Who is this?”</p>
+    <p>Don’t. It’s a way to get you talking, and the conversation can go in a lot of different directions. Many of them won’t seem like they can do any damage to you, but they will. <a href="https://www.youtube.com/watch?v=pLPpl2ISKTg" target="_blank" rel="noopener">John Oliver’s show has a great piece on it.</a></p>
+    <p class="do"><strong>What to do:</strong> Simply block the number.</p>
+  </article>
+
+  <article class="scam" id="paypal-bank">
+    <h3>PayPal and bank scams</h3>
+    <p>You get a message from PayPal that looks legitimate and says you owe some money. Or a bank email that says something similar and asks you to log in.</p>
+    <p class="do"><strong>What to do:</strong> Do not log in from an email. Look at who sent it and make sure it’s the exact email address. Then log into your PayPal or bank account the way you normally do and see if any of that information is there.</p>
+  </article>
+
+  <article class="scam" id="paid-too-much">
+    <h3>“We paid you too much”</h3>
+    <p>Connected to any financial scam, they make it look like they’ve paid you too much. You’ll even see money in your account. All you need to do, they say, is pay it back.</p>
+    <p class="do"><strong>What to do:</strong> Don’t. If someone truly paid you too much, that’s their problem, not yours. The one exception is if you’re in business with them. Then yes, pay them back. I’ve had to do this a number of times.</p>
+  </article>
+
+  <article class="scam" id="update-password">
+    <h3>“Update your password”</h3>
+    <p>Very similar to the one above, but they’re just asking you to log in to check your information. Requests to update your password can also be legitimate, and that’s fine.</p>
+    <p class="do"><strong>What to do:</strong> Don’t click any links in the email. Go to the site like you normally would and change your password there.</p>
+  </article>
+
+  <article class="scam" id="prize">
+    <h3>“You’ve won a prize”</h3>
+    <p>You’re a winner! To claim your prize, you just need to pay some taxes or processing fees up front.</p>
+    <p class="do"><strong>What to do:</strong> Don’t pay. You didn’t win anything.</p>
+  </article>
+
+  <article class="scam" id="mfa">
+    <h3>MFA code scams</h3>
+    <p>MFA stands for multi-factor authentication, the code you get when you log in to an account. If you ever get a support call where they ask you for your MFA code, you’re in a scam.</p>
+    <p class="do"><strong>What to do:</strong> Do not give your MFA code over the phone, text, or email. Once you do, they’re in your system and can do whatever they want.</p>
+  </article>
+
+  <article class="scam" id="gift-card">
+    <h3>Gift card scams</h3>
+    <p>This is probably the most well known. It tends to happen at an office, where you get a request from your boss to order a bunch of gift cards.</p>
+    <p class="do"><strong>What to do:</strong> Pick up the phone, call your boss, and ask if they really made the request.</p>
+  </article>
+
+  <article class="scam" id="merchandise">
+    <h3>Online merchandise scams</h3>
+    <p>You order a product from an online ad and don’t get what you paid for. This happened to me. I ordered what looked like a self-solving Rubik’s Cube. It turned out to be a regular knock-off cube that maybe cost $2. Because I paid with a credit card, I was able to dispute the charge, and I got my money back.</p>
+    <p class="do"><strong>What to do:</strong> Never use debit cards. If something goes wrong, you wouldn’t be able to dispute the charge.</p>
+  </article>
+
+  <article class="scam" id="family-scam">
+    <h3>Family member scams</h3>
+    <p>You get a call from a loved one who’s in trouble, and you need to send money right away. With AI, anyone’s voice and face can be faked. You can and will easily be fooled.</p>
+    <p class="do"><strong>What to do:</strong> Set up a <a href="#family-password">family password</a>. More on that below.</p>
+  </article>
+
+  <article class="scam" id="tech-support">
+    <h3>Tech support scams</h3>
+    <p>You get a call out of the blue saying they’re seeing some bizarre activity on your computer. Maybe they’ll say they’re from Microsoft. They need access so they can update your software.</p>
+    <p class="do"><strong>What to do:</strong> Don’t give it to them.</p>
+  </article>
+
+  <article class="scam" id="credential-stuffing">
+    <h3>Credential stuffing</h3>
+    <p>Chances are you’re reusing passwords, and criminals know it. Many of your passwords have already been exposed on the Internet and are sitting in clear text on the dark web for anyone to see. Criminals take those lists of usernames and passwords and see what other accounts they can get into.</p>
+    <p class="do"><strong>What to do:</strong> Find out which of your accounts have been exposed at <a href="https://haveibeenpwned.com/" target="_blank" rel="noopener">haveibeenpwned.com</a>. Type in whatever emails you use to log into accounts and you’ll see.</p>
+  </article>
+
+  <h2 class="section" id="protect">How to protect yourself</h2>
+
+  <section class="gap" id="gap-it" aria-labelledby="gap-title">
+    <h3 id="gap-title">GAP IT</h3>
+    <p>Never respond directly to any kind of message. These scams can come through any type of messaging tool. Instead of responding directly, log into whatever system you think may be at issue like you normally would, or call the organization by looking up the number on their site, not the message you received.</p>
+  </section>
+
+  <ul class="tips">
+    <li>
+      <h3>Don’t click</h3>
+      <p>If an email looks too legitimate or phishy, do not click. See GAP IT above. If you have tech support at your organization, flag it for your support staff. That lets them block it in the future and keep others from getting caught.</p>
+    </li>
+    <li id="family-password">
+      <h3>Have a family password</h3>
+      <p>My voice and face are so prevalent on the Internet that if someone wants to fake me, they could do it very easily and fool everyone. We have a family password, and you should too. It’s a word you’d say out loud in normal conversation, so don’t pick something like “pineapple.” If my family gets a message from me that sounds really urgent and I don’t say the password, they know it’s bogus.</p>
+    </li>
+    <li>
+      <h3>Use different passwords</h3>
+      <p>Especially for financial sites.</p>
+    </li>
+    <li>
+      <h3>Use a password manager</h3>
+      <p>I can’t see how anyone can operate online anymore without one. 1Password is the one I use for my business. I barely know any of my passwords. I just know my master password, and that’s pretty much it. With a password manager you can create really complicated passwords and not worry about it.</p>
+    </li>
+    <li>
+      <h3>Use MFA</h3>
+      <p>Multi-factor authentication is a great way to protect yourself, especially if your password is compromised. Make sure you’re using it on all your financial accounts.</p>
+    </li>
+    <li>
+      <h3>Use a VPN</h3>
+      <p>If you’re traveling and using hotel, airport, or coffeehouse Wi-Fi, use a VPN (virtual private network). It hides you on public Wi-Fi, which can easily be scanned. Most antivirus programs also have a VPN tool. Use it.</p>
+    </li>
+    <li>
+      <h3>Freeze all your credit accounts</h3>
+      <p>If you haven’t already, freeze all your credit accounts. This is how criminals steal your identity, by changing your credit accounts. By default, they’re on 24/7, and they don’t need to be. They only need to be open at the moment a business has to do a credit check, like when you get a new phone carrier or buy a car. Mine are frozen. I open them for 24 hours when I need a credit check, and then they automatically freeze again.</p>
+    </li>
+  </ul>
+
+  <footer class="signoff">
+    <p>That’s your cyber PSA from your friendly relative.</p>
+    <p class="name">David</p>
+  </footer>
+
+</main>
+<script>
+(function(){
+  var BASE=location.href.split('#')[0];
+  var $=function(id){return document.getElementById(id)};
+  var baseTitle=document.title;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var currentLink='',currentTo='';
+
+  function clean(s){return String(s).replace(/\s+/g,' ').trim().slice(0,40)}
+  function enc(o){
+    var bytes=new TextEncoder().encode(JSON.stringify(o)),bin='';
+    for(var i=0;i<bytes.length;i++)bin+=String.fromCharCode(bytes[i]);
+    return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  }
+  function dec(t){
+    try{
+      if(!/^[A-Za-z0-9_-]+$/.test(t))return null;
+      var s=t.replace(/-/g,'+').replace(/_/g,'/');
+      while(s.length%4)s+='=';
+      var bin=atob(s),bytes=new Uint8Array(bin.length);
+      for(var i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
+      var o=JSON.parse(new TextDecoder().decode(bytes));
+      if(o&&typeof o.t==='string'&&typeof o.f==='string'){
+        var to=clean(o.t),from=clean(o.f);
+        if(to&&from)return {t:to,f:from};
+      }
+    }catch(e){}
+    return null;
+  }
+  function setStatus(msg,isErr){
+    var el=$('status');
+    el.textContent=msg||'';
+    el.className='status'+(isErr?' err':'');
+  }
+  function showView(p){
+    $('v-to').textContent=p.t;
+    $('v-from').textContent=p.f;
+    $('make').hidden=true;
+    $('view').hidden=false;
+    document.title='A cyber PSA for '+p.t;
+  }
+  function showMake(){
+    $('view').hidden=true;
+    $('make').hidden=false;
+    $('result').hidden=true;
+    $('to').value='';
+    $('from').value='';
+    setStatus('');
+    document.title=baseTitle;
+    $('to').focus();
+  }
+  function create(){
+    var to=clean($('to').value),from=clean($('from').value);
+    if(!to||!from){
+      setStatus('Add both names to make your link.',true);
+      (!to?$('to'):$('from')).focus();
+      return;
+    }
+    currentLink=BASE+'#'+enc({t:to,f:from});
+    currentTo=to;
+    $('link').value=currentLink;
+    $('r-to').textContent=to;
+    $('r-from').textContent=from;
+    $('result').hidden=false;
+    $('share').hidden=!navigator.share;
+    setStatus(location.protocol==='file:'?'Heads up: this link only works on this computer until the page is hosted online.':'');
+  }
+  function fallbackCopy(){
+    var el=$('link');
+    el.focus();el.select();
+    try{
+      if(document.execCommand('copy')){setStatus('Link copied.');return;}
+    }catch(e){}
+    setStatus('Press and hold the link above to copy it.');
+  }
+  function copy(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(currentLink).then(function(){setStatus('Link copied.')},fallbackCopy);
+    }else{fallbackCopy();}
+  }
+
+  $('create').addEventListener('click',create);
+  ['to','from'].forEach(function(id){
+    $(id).addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();create();}});
+  });
+  $('copy').addEventListener('click',copy);
+  $('share').addEventListener('click',function(){
+    if(navigator.share)navigator.share({title:'A cyber PSA for '+currentTo,url:currentLink}).catch(function(){});
+  });
+  $('remake').addEventListener('click',showMake);
+
+  /* In-page jump links scroll without touching the address hash, which carries the names. */
+  var links=document.querySelectorAll('a[href^="#"]');
+  for(var i=0;i<links.length;i++){
+    links[i].addEventListener('click',function(e){
+      var id=this.getAttribute('href').slice(1),el=id&&document.getElementById(id);
+      if(el){e.preventDefault();el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});}
+    });
+  }
+
+  var h='';
+  try{h=(location.hash||'').replace(/^#/,'');}catch(e){}
+  var p=h?dec(h):null;
+  if(p)showView(p);
+})();
+</script>
+</body>
+</html>
